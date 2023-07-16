@@ -1,25 +1,28 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int extraMemoryAllocated;
 
 
 void heapHelper(int arr[], int n, int i){
-	int largest = i; 
-	int l = 2 * i + 1;
-	int r = 2 * i + 2;
+	int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
 
-	if (l < n && arr[l] > arr[largest]) 
-		largest = l; 
-	if (r < n && arr[r] > arr[largest]) 
-		largest = r; 
-	if (largest != i) { 
-		swap(arr[i], arr[largest]); 
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
 
-		// Recursively heapify the affected sub-tree 
-		heapHelper(arr, n, largest); 
-	} 
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+
+    if (largest != i) {
+        int temp = arr[i];
+        arr[i] = arr[largest];
+        arr[largest] = temp;
+        heapHelper(arr, n, largest);
+    }
 } 
 
 
@@ -27,15 +30,17 @@ void heapHelper(int arr[], int n, int i){
 // implements heap sort
 // extraMemoryAllocated counts bytes of memory allocated
 void heapSort(int arr[], int n){
-	extraMemoryAllocated += 4;
+    extraMemoryAllocated = 0;
 
-	for (int i = n / 2 - 1; i >= 0; i--)
-		heapHelper(arr, n, i);
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapHelper(arr, n, i);
 
-	for(int i = n - 1; i >= 0; i--){
-		swap(arr[0], arr[i]);
+    for (int i = n - 1; i > 0; i--) {
+        int temp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = temp;
 
-		heapHelper(arr, i, 0);
+        heapHelper(arr, i, 0);
 	}
 }
 
@@ -49,32 +54,32 @@ int L[n1], R[n2];
 extraMemoryAllocated += (n1 + n2);
 
 for(i = 0; i < n1; i++)
-	L[i] = arr[l + i];
+	L[i] = pData[l + i];
 for(j = 0; j < n2; j++)
-	R[j] = arr[m + 1 + j];
+	R[j] = pData[m + 1 + j];
 
 i = 0;
 j = 0;
 k = l;
 
 while(i < n1 && j < n2){
-	if (L[i] <= R[j]{
-		arr[k] = L[i];
+	if (L[i] <= R[j]){
+		pData[k] = L[i];
 		i++;
 	}
 	else{
-		arr[k] = R[j];
+		pData[k] = R[j];
 		j++;
 	}
 	k++;
 }
 while (i < n1) { 
-	arr[k] = L[i]; 
+	pData[k] = L[i]; 
 	i++; 
 	k++; 
 } 
 while (j < n2) { 
-	arr[k] = R[j]; 
+	pData[k] = R[j]; 
 	j++; 
 	k++; 
 	} 
